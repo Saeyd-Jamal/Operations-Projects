@@ -1,0 +1,45 @@
+.table-container {
+    position: relative;
+}
+
+table#sticky {
+    width: 100%;
+    border-collapse: collapse;
+    display: block;
+    overflow: auto;
+    height: 450px;
+}
+
+table#sticky thead {
+    background-color: #f2f2f2;
+    position: sticky;
+    top: 0;
+    z-index: 5; /* تأكد من بقاء الرأس فوق بقية المحتوى */
+}
+
+table#sticky tbody {
+    display: table-row-group;
+    max-height: 400px; /* تعيين الارتفاع الأقصى للجزء القابل للتمرير */
+    overflow-y: auto; /* السماح بالتمرير العمودي */
+}
+
+table#sticky tbody tr {
+    display: table-row;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.sticky {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    right: 0;
+    z-index: 3; /* تأكد من أن العمود المثبت يظهر فوق الأعمدة الأخرى */
+    background: #eeeeeec7;
+}
+th.sticky {
+    background-color: #f2f2f2 !important;
+
+}
+tr.sticky {
+    background-color: white !important;
+}
