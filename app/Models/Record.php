@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Observers\RecordObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,4 +31,12 @@ class Record extends Model
         'user_id',
         'user_name',
     ];
+
+    protected static function boot()
+    {
+        parent::boot(); // استدعاء الدالة الأصلية من Model إذا لزم الأمر
+
+        // تسجيل الـ Observer
+        static::observe(RecordObserver::class);
+    }
 }

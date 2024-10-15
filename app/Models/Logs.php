@@ -9,6 +9,8 @@ class Logs extends Model
 {
     use HasFactory;
 
+    protected $table = 'logs';
+    
     protected $fillable = [
         'type',
         'message',

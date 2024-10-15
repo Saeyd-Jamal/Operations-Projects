@@ -102,6 +102,7 @@
                 </tr>
                 <tr style="background: #dddddd;">
                     <th>#</th>
+                    <th>تمت <br> العملية</th>
                     <th>التاريخ</th>
                     <th style="white-space: nowrap;">الاسم</th>
                     <th>الممول</th>
@@ -110,6 +111,7 @@
                     <th>جوال 1</th>
                     <th>جوال 2</th>
                     <th style="white-space: nowrap;">العملية</th>
+                    <th style="white-space: nowrap;">الطبيب</th>
                     <th>التكلفة</th>
                 </tr>
             </thead>
@@ -117,6 +119,11 @@
                 @foreach ($records as $record)
                 <tr>
                     <td>{{$loop->iteration}}</td>
+                    <td>
+                        @if ($record['done'] == 1)
+                        <p style="font-family: Helvetica, Arial, Sans-Serif; font-size: 16px;">&#9745;</p>
+                        @endif
+                    </td>
                     <td>{{$record['date']}}</td>
                     <td style="white-space: nowrap;">{{$record['name']}}</td>
                     <td>{{$record['financier_number']}}</td>
@@ -125,6 +132,7 @@
                     <td>{{$record['phone_number1']}}</td>
                     <td>{{$record['phone_number2']}}</td>
                     <td style="white-space: nowrap;">{{$record['operation']}}</td>
+                    <td style="white-space: nowrap;">{{$record['doctor']}}</td>
                     <td>{{$record['amount']}}</td>
                 </tr>
             @endforeach

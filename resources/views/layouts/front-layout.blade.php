@@ -1,7 +1,7 @@
 @include('layouts.partials.header')
 <div class="wrapper">
     @include('layouts.partials.nav')
-    @include('layouts.partials.aside')
+    {{-- @include('layouts.partials.aside') --}}
     <main role="main" class="main-content">
         <x-alert type="success" />
         <x-alert type="info" />

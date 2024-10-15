@@ -108,9 +108,9 @@
                     <th>العمر</th>
                     <th style="white-space: nowrap;">العملية</th>
                     <th style="white-space: nowrap;">الطبيب</th>
+                    <th style="white-space: nowrap;">طبيب التخدير</th>
                     <th>م المطلوب</th>
                     <th>حصة الطبيب</th>
-                    <th>طبيب التخدير</th>
                     <th>التخدير</th>
                     <th>المبيت</th>
                     <th>خاص</th>
@@ -126,10 +126,10 @@
                     <td>{{ $record['age'] }}</td>  <!-- العمر -->
                     <td style="white-space: nowrap;">{{ $record['operation'] }}</td>  <!-- العملية -->
                     <td style="white-space: nowrap;">{{ $record['doctor'] }}</td>  <!-- الطبيب -->
+                    <td style="white-space: nowrap;">{{ $record['anesthesia'] }}</td>  <!-- التخدير -->
                     <td>{{ $record['amount'] }}</td>  <!-- المبلغ -->
                     <td>{{ $record['doctor_share'] }}</td>  <!-- حصة الطبيب -->
                     <td>{{ $record['anesthesiologists_share'] }}</td>  <!-- حصة الأطباء المساعدين -->
-                    <td>{{ $record['anesthesia'] }}</td>  <!-- التخدير -->
                     <td>{{ $record['bed'] }}</td>  <!-- السرير -->
                     <td>{{ $record['private'] }}</td>  <!-- خاص -->
                 </tr>

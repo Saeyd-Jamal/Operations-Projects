@@ -50,6 +50,14 @@
                     </datalist>
                 </div>
                 <div class="form-group col-md-3">
+                    <x-form.input name="anesthesia" list="anesthesias_list" label="طبيب التخدير" wire:model="filterData.anesthesia" />
+                    <datalist id="anesthesias_list">
+                        @foreach ($anesthesias as $anesthesia)
+                            <option value="{{$anesthesia}}">
+                        @endforeach
+                    </datalist>
+                </div>
+                <div class="form-group col-md-3">
                     <x-form.input type="date" name="from_date" label="من تاريخ" wire:model="filterData.from_date" />
                 </div>
                 <div class="form-group col-md-3">
@@ -88,12 +96,14 @@
                     <th>جوال 2</th>
                     <th>العملية</th>
                     <th>الطبيب</th>
-                    <th>المبلغ المطلوب</th>
+                    <th>التكلفة</th>
+                    @can('financial','App\\Models\Record')
                     <th>حصة الطبيب</th>
                     <th>طبيب التخدير</th>
-                    <th>التخدير</th>
+                    <th>حصة التخدير</th>
                     <th>المبيت</th>
                     <th>خاص</th>
+                    @endcan
                     <th>ملاحظات</th>
                     <th>المستخدم</th>
                     <th></th>
@@ -146,11 +156,13 @@
                         <td>{{$record->operation}}</td>
                         <td>{{$record->doctor}}</td>
                         <td>{{$record->amount}}</td>
+                        @can('financial','App\\Models\Record')
                         <td>{{$record->doctor_share}}</td>
-                        <td>{{$record->anesthesiologists_share}}</td>
                         <td>{{$record->anesthesia}}</td>
+                        <td>{{$record->anesthesiologists_share}}</td>
                         <td>{{$record->bed}}</td>
                         <td>{{$record->private}}</td>
+                        @endcan
                         <td class="description">{{$record->notes}}</td>
                         <td>{{$record->user}}</td>
                         <td>
@@ -225,27 +237,35 @@
                                             @endforeach
                                         </datalist>
                                     </div>
+                                    <div class="form-group col-md-6">
+                                        <x-form.input name="anesthesia" list="anesthesias_list" label="طبيب التخدير" wire:model="dataModal.anesthesia" />
+                                        <datalist id="anesthesias_list">
+                                            @foreach ($anesthesias as $anesthesia)
+                                                <option value="{{$anesthesia}}">
+                                            @endforeach
+                                        </datalist>
+                                    </div>
                                 </div>
                                 <hr>
                                 <div class="row">
                                     <div class="form-group col-md-3">
                                         <x-form.input type="number" min="0" name="amount" label="م مطلوب" :value="$dataModal['amount']" wire:input="amountS($event.target.value)" />
                                     </div>
+                                    @can('financial','App\\Models\Record')
                                     <div class="form-group col-md-3">
                                         <x-form.input type="number" min="0" name="doctor_share" label="حصة الطبيب" wire:model="dataModal.doctor_share" />
                                     </div>
                                     <div class="form-group col-md-3">
                                         <x-form.input type="number" min="0" name="anesthesiologists_share" label="حصة طبيب التخدير" wire:model="dataModal.anesthesiologists_share" />
                                     </div>
-                                    <div class="form-group col-md-3">
-                                        <x-form.input type="number" min="0" name="anesthesia" label="التخدير" wire:model="dataModal.anesthesia" />
-                                    </div>
+
                                     <div class="form-group col-md-3">
                                         <x-form.input type="number" min="0" name="bed" label="المبيت" wire:model="dataModal.bed" />
                                     </div>
                                     <div class="form-group col-md-3">
                                         <x-form.input type="number" min="0" name="private" label="خاص" wire:model="dataModal.private" />
                                     </div>
+                                    @endcan
                                 </div>
                                 <hr>
                                 <div class="row">
@@ -259,7 +279,7 @@
                                     <input type="checkbox" name="done" id="done" @if($dataModal['done'] == 1) checked @endif wire:model="dataModal.done">
                                     <label for="done">تمت العملية</label>
                                 </div>
-                                <button type="button" wire:click="save" class="btn btn-primary">حفظ</button>
+                                <button type="button" wire:click="save" class="btn btn-primary" >حفظ</button>
                             </div>
                         </div>
                     </div>
@@ -327,12 +347,21 @@
                                 @endforeach
                             </datalist>
                         </div>
+                        <div class="form-group col-md-6">
+                            <x-form.input name="anesthesia" list="anesthesias_list" label="طبيب التخدير" />
+                            <datalist id="anesthesias_list">
+                                @foreach ($anesthesias as $anesthesia)
+                                    <option value="{{$anesthesia}}">
+                                @endforeach
+                            </datalist>
+                        </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="form-group col-md-3">
                             <x-form.input type="number" min="0" name="amount" label="م مطلوب"  required />
                         </div>
+                        @can('financial','App\\Models\Record')
                         <div class="form-group col-md-3">
                             <x-form.input type="number" min="0" name="doctor_share" label="حصة الطبيب" />
                         </div>
@@ -340,14 +369,12 @@
                             <x-form.input type="number" min="0" name="anesthesiologists_share" label="حصة طبيب التخدير" value="0" />
                         </div>
                         <div class="form-group col-md-3">
-                            <x-form.input type="number" min="0" name="anesthesia" label="التخدير"  value="0"/>
-                        </div>
-                        <div class="form-group col-md-3">
                             <x-form.input type="number" min="0" name="bed" label="المبيت" value="0" />
                         </div>
                         <div class="form-group col-md-3">
                             <x-form.input type="number" min="0" name="private" label="خاص" />
                         </div>
+                        @endcan
                     </div>
                     <hr>
                     <div class="row">
@@ -398,7 +425,9 @@
                             <select name="report" id="report" class="form-control" required>
                                 <option value="" disabled selected>اختر</option>
                                 <option value="basic">أساسي</option>
+                                @can('financial','App\\Models\Record')
                                 <option value="mali">مالي</option>
+                                @endcan
                             </select>
                         </div>
                     </div>
