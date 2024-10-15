@@ -22,10 +22,10 @@ return new class extends Migration
             $table->integer('phone_number2')->comment('جوال 2')->nullable();
             $table->string('operation')->comment('العملية')->nullable();
             $table->string('doctor')->comment('الطبيب')->nullable();
-            $table->string('anesthesia')->comment('التخدير')->nullable();
             $table->bigInteger('amount')->comment('م مطلوب')->nullable();
             $table->integer('doctor_share')->comment('حصة الطبيب')->nullable();
             $table->integer('anesthesiologists_share')->comment('حصة طبيب التخدير')->nullable();
+            $table->integer('anesthesia')->comment('التخدير')->nullable();
             $table->integer('bed')->comment('المبيت')->nullable();
             $table->integer('private')->comment('خاص')->nullable();
             $table->boolean('done')->default(0);

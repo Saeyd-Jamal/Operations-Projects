@@ -2,9 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\Logs;
 use App\Models\Record;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class TableRecord extends Component
@@ -45,15 +43,12 @@ class TableRecord extends Component
         'financier_number' => '',
         'operation' => '',
         'doctor' => '',
-        'anesthesia' => '',
         'done' => '',
     ];
 
     public $financier_numbers;
     public $operations;
     public $doctors;
-    public $anesthesias;
-
 
 
     public function __construct()
@@ -61,7 +56,6 @@ class TableRecord extends Component
         $this->financier_numbers = Record::select('financier_number')->distinct()->pluck('financier_number')->toArray();
         $this->operations = Record::select('operation')->distinct()->pluck('operation')->toArray();
         $this->doctors = Record::select('doctor')->distinct()->pluck('doctor')->toArray();
-        $this->anesthesias = Record::select('anesthesia')->distinct()->pluck('anesthesia')->toArray();
     }
 
     public function mount(){
@@ -75,23 +69,22 @@ class TableRecord extends Component
     }
 
     public function filter(){
-        $this->records = Record::query();
         foreach ($this->filterData as $key => $value) {
             if($value != ''){
                 if($key == 'from_date'){
                     $value = \Carbon\Carbon::parse($value)->format('Y-m-d');
-                    $this->records = $this->records->where('date', '>=', $value);
+                    $this->records = Record::where('date', '>=', $value);
                 }elseif($key == 'to_date'){
                     $value = \Carbon\Carbon::parse($value)->format('Y-m-d');
-                    $this->records = $this->records->where('date', '<=', $value);
-                }elseif($key == 'financier_number' || $key == 'operation' || $key == 'doctor' || $key == 'anesthesia' || $key == 'done'){
-                    $this->records = $this->records->where($key, '=', $value);
+                    $this->records = Record::where('date', '<=', $value);
+                }elseif($key == 'financier_number'){
+                    $this->records = Record::where($key, '=', $value);
                 }else{
-                    $this->records = $this->records->where($key, 'like', '%'.$value.'%');
+                    $this->records = Record::where($key, 'like', '%'.$value.'%');
                 }
+                $this->records = $this->records->get();
             }
         }
-        $this->records = $this->records->get();
     }
     public function resetForm(){
         foreach ($this->filterData as $key => $value) {
@@ -162,7 +155,6 @@ class TableRecord extends Component
     {
         // حفظ التعديلات في السجل
         $record = Record::where('id', $this->dataModal['id'])->first();
-
         $record->update($this->dataModal);
 
         // إغلاق المودال بعد الحفظ

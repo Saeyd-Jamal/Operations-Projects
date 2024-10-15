@@ -45,14 +45,6 @@
                 </a>
             </li>
             @endcan
-            @can('view','App\\Models\Logs')
-            <li class="nav-item w-100">
-                <a class="nav-link" href="{{route('logs.index')}}">
-                    <i class="fe fe-user fe-16"></i>
-                    <span class="ml-3 item-text">الأحداث</span>
-                </a>
-            </li>
-            @endcan
         </ul>
         <div class="btn-box w-100 mt-3 mb-1">
             <p class="text-muted font-weight-bold h6">© تم الإنشاء بواسطة <a href="https://saeyd-jamal.github.io/My_Portfolio/" target="_blank">م.السيد الأخرس</a></p>

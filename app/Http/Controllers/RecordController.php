@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Logs;
 use App\Models\Record;
 use Illuminate\Http\Request;
 use Mccarlosen\LaravelMpdf\Facades\LaravelMpdf as PDF;
@@ -38,7 +37,6 @@ class RecordController extends Controller
             'user_name' => $request->user()->name
         ]);
         Record::create($request->all());
-
         return redirect()->back()->with('success', 'تم إضافة مريض جديد بنجاح');
     }
 
@@ -56,14 +54,6 @@ class RecordController extends Controller
     {
         $records = json_decode($request->data, true); // 'true' لتحويلها إلى مصفوفة
         $recordsCollection = collect($records); // تحويل المصفوفة إلى Collection
-
-        Logs::create([
-            'type' => 'print',
-            'message' => 'تم طباعة تقرير : ' . $request->report,
-            'user_id' => $request->user()->id,
-            'user_name' => $request->user()->name,
-        ]);
-
         if($request->report == 'basic'){
             $pdf = PDF::loadView('dashboard.reports.basic',['records' =>  $recordsCollection],[],[
                 'mode' => 'utf-8',

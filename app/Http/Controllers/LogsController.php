@@ -12,8 +12,7 @@ class LogsController extends Controller
      */
     public function index()
     {
-        $logs = Logs::paginate(100);
-        return view('dashboard.logs', compact('logs'));
+        //
     }
 
     /**

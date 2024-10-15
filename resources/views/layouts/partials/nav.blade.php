@@ -1,75 +1,30 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white flex-row border-bottom shadow">
-    <div class="container-fluid">
-        <a class="navbar-brand mx-lg-1 mr-0 d-flex align-items-center" href="{{route('records.index')}}}">
-            <img src="{{asset('img/logo.png')}}" class="navbar-brand-img" alt="..." style="width: 8%">
-            <h1 class="h3 ml-2">مستشفى يافا الطبي</h1>
-        </a>
-        <button class="navbar-toggler mt-2 mr-auto toggle-sidebar text-muted">
-            <i class="fe fe-menu navbar-toggler-icon"></i>
-        </button>
-        <div class="navbar-slide bg-white ml-lg-4" id="navbarSupportedContent">
-            <a href="#" class="btn toggle-sidebar d-lg-none text-muted ml-2 mt-3" data-toggle="toggle">
-                <i class="fe fe-x"><span class="sr-only"></span></i>
+<nav class="topnav navbar navbar-light">
+    <button type="button" class="navbar-toggler text-muted mt-2 p-0 mr-3 collapseSidebar">
+        <i class="fe fe-menu navbar-toggler-icon"></i>
+    </button>
+    <form class="form-inline mr-auto searchform text-muted">
+        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search"
+            placeholder="Type something..." aria-label="Search">
+    </form>
+    <ul class="nav">
+        <li class="nav-item">
+            <a class="nav-link text-muted my-2" href="#" id="modeSwitcher" data-mode="light">
+                <i class="fe fe-sun fe-16"></i>
             </a>
-            <ul class="navbar-nav mr-auto">
-
-                @can('view','App\\Models\Record')
-
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-start" href="{{route('records.index')}}">
-                        <i class="fe fe-layers fe-16"></i>
-                        <span class="ml-lg-2">السجلات</span>
-                        {{-- <span class="badge badge-pill badge-info">{{ App\Models\Record::count() }}</span> --}}
-                    </a>
-                </li>
-                @endcan
-                @can('view','App\\Models\Financier')
-                <li class="nav-item">
-                    <a class="nav-link  d-flex align-items-start" href="{{route('financiers.index')}}">
-                        <i class="fe fe-dollar-sign fe-16"></i>
-                        <span class="ml-lg-2">الممولين</span>
-                    </a>
-                </li>
-                @endcan
-                @can('view','App\\Models\User')
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-start" href="{{route('users.index')}}">
-                        <i class="fe fe-user fe-16"></i>
-                        <span class="ml-lg-2">المستخدمين</span>
-                    </a>
-                </li>
-                @endcan
-                @can('view','App\\Models\Logs')
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-start" href="{{route('logs.index')}}">
-                        <i class="fe fe-clipboard fe-16"></i>
-                        <span class="ml-lg-2">الأحداث</span>
-                    </a>
-                </li>
-                @endcan
-            </ul>
-        </div>
-        <ul class="navbar-nav d-flex flex-row">
-            <li class="nav-item">
-                <li class="nav-item">
-                    <a class="nav-link text-muted my-2" href="#" id="modeSwitcher" data-mode="light">
-                        <i class="fe fe-sun fe-16"></i>
-                    </a>
-                </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink"
-                    role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="avatar avatar-sm mt-2">
-                        <img src="{{asset('img/user.jpg')}}" alt="..." class="avatar-img rounded-circle">
-                    </span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="dropdown-item">تسجيل الخروج</button>
-                    </form>
-                </div>
-            </li>
-        </ul>
-    </div>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink"
+                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="avatar avatar-sm mt-2">
+                    <img src="{{asset('img/user.jpg')}}" alt="..." class="avatar-img rounded-circle">
+                </span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="dropdown-item">تسجيل الخروج</button>
+                </form>
+            </div>
+        </li>
+    </ul>
 </nav>
