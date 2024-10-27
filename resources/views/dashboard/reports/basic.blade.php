@@ -110,6 +110,7 @@
                     <th>جوال 1</th>
                     <th>جوال 2</th>
                     <th style="white-space: nowrap;">العملية</th>
+                    <th style="white-space: nowrap;">الطبيب</th>
                     <th>التكلفة</th>
                 </tr>
             </thead>
@@ -117,15 +118,16 @@
                 @foreach ($records as $record)
                 <tr>
                     <td>{{$loop->iteration}}</td>
-                    <td>{{$record['date']}}</td>
-                    <td style="white-space: nowrap;">{{$record['name']}}</td>
-                    <td>{{$record['financier_number']}}</td>
-                    <td>{{$record['age']}}</td>
-                    <td>{{$record['patient_ID']}}</td>
-                    <td>{{$record['phone_number1']}}</td>
-                    <td>{{$record['phone_number2']}}</td>
-                    <td style="white-space: nowrap;">{{$record['operation']}}</td>
-                    <td>{{$record['amount']}}</td>
+                    <td>{{$record[1]}}</td>
+                    <td style="white-space: nowrap;">{{$record[2]}}</td>
+                    <td>{{$record[3]}}</td>
+                    <td>{{$record[4]}}</td>
+                    <td>{{$record[5]}}</td>
+                    <td>{{$record[6]}}</td>
+                    <td>{{$record[7]}}</td>
+                    <td style="white-space: nowrap;">{{$record[8]}}</td>
+                    <td style="white-space: nowrap;">{{$record[9]}}</td>
+                    <td>{{$record[10]}}</td>
                 </tr>
             @endforeach
             </tbody>

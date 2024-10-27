@@ -17,6 +17,14 @@ Route::group([
 
     Route::post('records/print', [RecordController::class, 'print'])->name('records.print');
 
+
+    // routes/api.php
+    Route::get('/records/getData', [RecordController::class, 'getData']);
+    Route::post('/records/saveData', [RecordController::class, 'saveData']);
+    Route::post('/records/update-row', [RecordController::class, 'update_row']);
+
+    Route::post('/records/print', [RecordController::class, 'print'])->name('records.print');
+
     Route::resources([
         'records' => RecordController::class,
         'financiers' => FinancierController::class,

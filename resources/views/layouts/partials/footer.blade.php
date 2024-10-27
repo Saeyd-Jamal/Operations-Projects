@@ -202,8 +202,6 @@
     }
 </script>
 <script src="{{ asset('assets/js/apps.js') }}"></script>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script src='{{ asset('assets/js/gtag.js') }}'></script>
 <script>
     window.dataLayer = window.dataLayer || [];
 
@@ -213,7 +211,19 @@
     gtag('js', new Date());
     gtag('config', 'UA-56159088-1');
 </script>
-<script src='{{ asset('vendor/livewire/livewire.js') }}'></script>
+<script>
+    (function($) {
+        // Spinner
+        var spinner = function() {
+            setTimeout(function() {
+                if ($('#spinner').length > 0) {
+                    $('#spinner').removeClass('show');
+                }
+            }, 1);
+        };
+        spinner();
+    })(jQuery);
+</script>
 @stack('scripts')
 </body>
 </html>
