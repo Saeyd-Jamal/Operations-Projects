@@ -3,16 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Logs;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class LogsController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $this->authorize('view', Logs::class);
+        $logs = Logs::paginate(100);
+        return view('dashboard.logs', compact('logs'));
     }
 
     /**

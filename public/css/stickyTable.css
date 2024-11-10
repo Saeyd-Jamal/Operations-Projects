@@ -10,11 +10,22 @@ table#sticky {
     height: 450px;
 }
 
+
 table#sticky thead {
-    background-color: #f2f2f2;
+    background-color: #5b9bd5;
     position: sticky;
-    top: 0;
-    z-index: 5; /* تأكد من بقاء الرأس فوق بقية المحتوى */
+    top: -3px;
+    z-index: 4; /* تأكد من بقاء الرأس فوق بقية المحتوى */
+}
+table#sticky tfoot {
+    outline: 1px solid #06060675;
+    background-color: #5b9bd5;
+    position: sticky;
+    bottom: -3px;
+    z-index: 3; /* تأكد من بقاء الرأس فوق بقية المحتوى */
+}
+tfoot td{
+    font-weight: 800 !important;
 }
 
 table#sticky tbody {
@@ -22,6 +33,7 @@ table#sticky tbody {
     max-height: 400px; /* تعيين الارتفاع الأقصى للجزء القابل للتمرير */
     overflow-y: auto; /* السماح بالتمرير العمودي */
 }
+
 
 table#sticky tbody tr {
     display: table-row;
@@ -37,8 +49,7 @@ table#sticky tbody tr {
     background: #eeeeeec7;
 }
 th.sticky {
-    background-color: #f2f2f2 !important;
-
+    /* background-color: #f2f2f2 !important; */
 }
 tr.sticky {
     background-color: white !important;

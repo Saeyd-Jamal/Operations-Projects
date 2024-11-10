@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Record;
+use App\Models\Financier;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class RecordPolicy extends ModelPolicy
+class FinancierPolicy extends ModelPolicy
 {
 
 }

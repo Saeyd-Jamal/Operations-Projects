@@ -1,25 +1,4 @@
 @include('layouts.partials.header')
-<style>
-    /*** Spinner ***/
-
-    #spinner {
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity .5s ease-out, visibility 0s linear .5s;
-        z-index: 99999;
-    }
-
-    #spinner.show {
-        transition: opacity .5s ease-out, visibility 0s linear 0s;
-        visibility: visible;
-        opacity: 1;
-    }
-</style>
-<!-- Spinner Start -->
-<div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-    <div class="spinner-grow text-primary" role="status"></div>
-</div>
-<!-- Spinner End -->
 <div class="wrapper">
     @include('layouts.partials.nav')
     {{-- @include('layouts.partials.aside') --}}

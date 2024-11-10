@@ -108,9 +108,9 @@
                     <th>العمر</th>
                     <th style="white-space: nowrap;">العملية</th>
                     <th style="white-space: nowrap;">الطبيب</th>
+                    <th style="white-space: nowrap;">طبيب التخدير</th>
                     <th>م المطلوب</th>
                     <th>حصة الطبيب</th>
-                    <th>طبيب التخدير</th>
                     <th>التخدير</th>
                     <th>المبيت</th>
                     <th>خاص</th>
@@ -120,18 +120,18 @@
                 @foreach ($records as $record)
                 <tr>
                     <td>{{$loop->iteration}}</td>
-                    <td>{{ $record[1] }}</td>  <!-- التاريخ -->
-                    <td style="white-space: nowrap;">{{ $record[2] }}</td>  <!-- الاسم -->
-                    <td>{{ $record[3] }}</td>  <!-- رقم التمويل -->
-                    <td>{{ $record[4] }}</td>  <!-- العمر -->
-                    <td style="white-space: nowrap;">{{ $record[8] }}</td>  <!-- العملية -->
-                    <td style="white-space: nowrap;">{{ $record[9] }}</td>  <!-- الطبيب -->
-                    <td>{{ $record[10] }}</td>  <!-- المبلغ -->
-                    <td>{{ $record[11] }}</td>  <!-- حصة الطبيب -->
-                    <td>{{ $record[12] }}</td>  <!-- التخدير -->
-                    <td>{{ $record[13] }}</td>  <!-- حصة الأطباء المساعدين -->
-                    <td>{{ $record[14] }}</td>  <!-- السرير -->
-                    <td>{{ $record[15] }}</td>  <!-- خاص -->
+                    <td>{{ $record['date'] }}</td>  <!-- التاريخ -->
+                    <td style="white-space: nowrap;">{{ $record['name'] }}</td>  <!-- الاسم -->
+                    <td>{{ $record['financier_number'] }}</td>  <!-- رقم التمويل -->
+                    <td>{{ $record['age'] }}</td>  <!-- العمر -->
+                    <td style="white-space: nowrap;">{{ $record['operation'] }}</td>  <!-- العملية -->
+                    <td style="white-space: nowrap;">{{ $record['doctor'] }}</td>  <!-- الطبيب -->
+                    <td style="white-space: nowrap;">{{ $record['anesthesia'] }}</td>  <!-- التخدير -->
+                    <td>{{ $record['amount'] }}</td>  <!-- المبلغ -->
+                    <td>{{ $record['doctor_share'] }}</td>  <!-- حصة الطبيب -->
+                    <td>{{ $record['anesthesiologists_share'] }}</td>  <!-- حصة الأطباء المساعدين -->
+                    <td>{{ $record['bed'] }}</td>  <!-- السرير -->
+                    <td>{{ $record['private'] }}</td>  <!-- خاص -->
                 </tr>
             @endforeach
             </tbody>
