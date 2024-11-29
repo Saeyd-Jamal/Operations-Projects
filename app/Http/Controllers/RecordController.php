@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Imports\RecordsImport;
 use App\Models\Logs;
 use App\Models\Record;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Mccarlosen\LaravelMpdf\Facades\LaravelMpdf as PDF;
-
+use Yajra\DataTables\Facades\DataTables;
 
 class RecordController extends Controller
 {
@@ -17,10 +18,51 @@ class RecordController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('view', Record::class);
-        return view('dashboard.records.index');
+        if($request->ajax()) {
+            // جلب بيانات المستخدمين من الجدول
+            $records = Record::query()->orderBy('date', 'asc');;
+            // التصفية بناءً على التواريخ
+            if ($request->from_date != null && $request->to_date != null) {
+                $records->whereBetween('date', [$request->from_date, $request->to_date]);
+            }
+
+            if ($request->from_age != null && $request->to_age != null) {
+                $records->whereBetween('age', [$request->from_age, $request->to_age]);
+            }
+
+            return DataTables::of($records)
+                    ->addIndexColumn()  // إضافة عمود الترقيم التلقائي
+                    ->addColumn('edit', function ($record) {
+                        return $record->id;
+                    })
+                    ->addColumn('delete', function ($record) {
+                        return $record->id;
+                    })
+                    ->make(true);
+        }
+
+        $names = Record::select('name')->distinct()->pluck('name')->toArray();
+        $financiers = Record::select('financier_number')->distinct()->pluck('financier_number')->toArray();
+        $operations = Record::select('operation')->distinct()->pluck('operation')->toArray();
+        $doctors = Record::select('doctor')->distinct()->pluck('doctor')->toArray();
+        $anesthesias = Record::select('anesthesia')->distinct()->pluck('anesthesia')->toArray();
+        $user_names = Record::select('user_name')->distinct()->pluck('user_name')->toArray();
+        return view('dashboard.records.index', compact('names', 'financiers', 'operations', 'doctors', 'anesthesias', 'user_names'));
+    }
+
+    public function create(Request $request)
+    {
+        $this->authorize('create', Record::class);
+        $record = new Record();
+        if($request->ajax()) {
+            $record->date = Carbon::now()->format('Y-m-d');
+            $record->user = $record->user;
+            return response()->json($record);
+        }
+        // return view('dashboard.projects.allocations.create', compact('allocation'));
     }
 
     /**
@@ -39,21 +81,29 @@ class RecordController extends Controller
             'doctor' => 'required',
             'amount' => 'required',
         ]);
+
         $request->merge([
+            'done' => $request->done ? 1 : 0,
             'user_id' => $request->user()->id,
             'user_name' => $request->user()->name
         ]);
         Record::create($request->all());
-
+        if($request->ajax()) {
+            return response()->json(['message' => 'تم الإضافة بنجاح']);
+        }
         return redirect()->back()->with('success', 'تم إضافة مريض جديد بنجاح');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Record $record)
+    public function edit(Request $request, Record $record)
     {
         $this->authorize('update', Record::class);
+        if($request->ajax()) {
+            $record->user = $record->user;
+            return response()->json($record);
+        }
         $financier_numbers = Record::select('financier_number')->distinct()->pluck('financier_number')->toArray();
         $operations = Record::select('operation')->distinct()->pluck('operation')->toArray();
         $doctors = Record::select('doctor')->distinct()->pluck('doctor')->toArray();
@@ -78,18 +128,27 @@ class RecordController extends Controller
             'doctor' => 'required',
             'amount' => 'required',
         ]);
+        $request->merge([
+            'done' => $request->done ? 1 : 0,
+        ]);
         $record->update($request->all());
-
+        if($request->ajax()) {
+            return response()->json(['message' => 'تم التحديث بنجاح']);
+        }
         return redirect()->route('records.index')->with('success', 'تم تعديل بيانات المريض');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Record $record)
+    public function destroy(Request $request, $id)
     {
         $this->authorize('delete', Record::class);
+        $record = Record::findOrFail($id);
         $record->delete();
+        if($request->ajax()) {
+            return response()->json(['message' => 'تم حذف المريض بنجاح']);
+        }
         return redirect()->back()->with('success', 'تم حذف المريض بنجاح');
     }
 

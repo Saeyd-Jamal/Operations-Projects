@@ -74,7 +74,7 @@ class TableRecord extends Component
     }
 
     public function mount(){
-        $this->records = Record::get();
+        $this->records = Record::orderBy('date', 'asc')->get();
         $this->count['count_records'] = $this->records->count();
         $this->count['sum_amount'] = $this->records->sum('amount');
         $this->count['doctor_share'] = $this->records->sum('doctor_share');
@@ -86,8 +86,10 @@ class TableRecord extends Component
     }
 
 
-    public function search($name){
-        $this->records = Record::where('name', 'like', '%'.$name.'%')->get();
+    public function search(){
+        $valueS = str_replace('*', '%', $this->filterData['name']);
+        $this->records = Record::where('name', 'LIKE', "%{$valueS}%")->orderBy('date', 'asc')->get();
+
         $this->count['count_records'] = $this->records->count();
         $this->count['sum_amount'] = $this->records->sum('amount');
         $this->count['doctor_share'] = $this->records->sum('doctor_share');
@@ -113,7 +115,7 @@ class TableRecord extends Component
                 }
             }
         }
-        $this->records = $this->records->get();
+        $this->records = $this->records->orderBy('date', 'asc')->get();
         $this->count['count_records'] = $this->records->count();
         $this->count['sum_amount'] = $this->records->sum('amount');
         $this->count['doctor_share'] = $this->records->sum('doctor_share');
@@ -126,7 +128,7 @@ class TableRecord extends Component
         foreach ($this->filterData as $key => $value) {
             $this->filterData[$key] = '';
         }
-        $this->records = Record::get();
+        $this->records = Record::orderBy('date', 'asc')->get();
         $this->count['count_records'] = $this->records->count();
         $this->count['sum_amount'] = $this->records->sum('amount');
         $this->count['doctor_share'] = $this->records->sum('doctor_share');
@@ -135,6 +137,11 @@ class TableRecord extends Component
         $this->count['private'] = $this->records->sum('private');
     }
 
+    public $name = '';
+    public function checkName($name){
+        $this->name = $name;
+        
+    }
 
     public function render()
     {

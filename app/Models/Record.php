@@ -11,6 +11,7 @@ class Record extends Model
     use HasFactory;
 
     protected $fillable = [
+        'done', //2
         'date',
         'name',
         'financier_number',
@@ -22,15 +23,14 @@ class Record extends Model
         'doctor',
         'amount',
         'doctor_share',
-        'anesthesiologists_share',
         'anesthesia',
+        'anesthesiologists_share',
         'bed',
         'private',
-        'done',
         'notes',
         'notes_2',
-        'user_id',
         'user_name',
+        'user_id',
     ];
 
     protected static function boot()

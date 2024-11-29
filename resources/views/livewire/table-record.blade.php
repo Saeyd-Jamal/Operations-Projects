@@ -1,12 +1,25 @@
 <div class="card shadow px-2">
     @push('styles')
         <link rel="stylesheet" href="{{asset('css/stickyTable.css')}}">
+        <style>
+            td,th{
+                font-size: 16px;
+            }
+        </style>
     @endpush
     <div class="card-header">
         <div class="row align-items-center justify-content-between">
             <h2 class="card-title">جدول المرضى</h2>
             <div class="form-group col-md-3">
-                <x-form.input type="search" name="name" placeholder="إملأ اسم المريض" wire:input="search($event.target.value)" wire:model="filterData.name" />
+                <div class="input-group mb-3">
+                    {{-- <input type="text" class="form-control" placeholder="Button addons" aria-label="Recipient's username" aria-describedby="button-addon2"> --}}
+                    <x-form.input type="search" name="name" placeholder="إملأ اسم المريض" wire:model="filterData.name"  aria-describedby="button-addon2" />
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" wire:click="search" type="button" id="button-addon2">
+                            <i class="fe fe-search"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
             <div>
                 <button class="btn btn-warning" id="filter-btn" title="التصفية">
@@ -252,7 +265,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-md-12">
-                            <x-form.input name="name" label="اسم المريض" required />
+                            <x-form.input name="name" label="اسم المريض" required  wire:model="name" wire:input="checkName" />
                         </div>
                         <div class="form-group col-md-4">
                             @can('date','App\\Models\Record')

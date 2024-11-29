@@ -1,13 +1,30 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white flex-row border-bottom shadow">
+<style>
+    .navbar-light .navbar-nav .nav-item > .nav-link{
+        color: #fff !important;
+        transition: all 0.3s ease-in-out;
+    }
+    .navbar-light .navbar-nav .nav-item > .nav-link:hover {
+        color: #fff !important;
+        background-color: #303030 !important;
+    }
+    .dropdown-menu .nav-link{
+        color: #000 !important;
+    }
+    .dropdown-menu .nav-link:hover{
+        color: #fff !important;
+        background-color: #303030 !important;
+    }
+</style>
+<nav class="navbar navbar-expand-lg navbar-light bg-dark flex-row border-bottom shadow">
     <div class="container-fluid">
         <a class="navbar-brand mx-lg-1 mr-0 d-flex align-items-center" href="{{route('records.index')}}}">
             <img src="{{asset('img/logo.png')}}" class="navbar-brand-img" alt="..." style="width: 8%">
-            <h1 class="h3 ml-2">مستشفى يافا الطبي</h1>
+            <h1 class="h3 ml-2 text-white">مستشفى يافا الطبي</h1>
         </a>
         <button class="navbar-toggler mt-2 mr-auto toggle-sidebar text-muted">
             <i class="fe fe-menu navbar-toggler-icon"></i>
         </button>
-        <div class="navbar-slide bg-white ml-lg-4" id="navbarSupportedContent">
+        <div class="navbar-slide bg-dark ml-lg-4" id="navbarSupportedContent">
             <a href="#" class="btn toggle-sidebar d-lg-none text-muted ml-2 mt-3" data-toggle="toggle">
                 <i class="fe fe-x"><span class="sr-only"></span></i>
             </a>
@@ -21,14 +38,14 @@
                     </a>
                 </li>
                 @endcan
-                @can('view','App\\Models\Financier')
+                {{-- @can('view','App\\Models\Financier')
                 <li class="nav-item">
                     <a class="nav-link  d-flex align-items-start" href="{{route('financiers.index')}}">
                         <i class="fe fe-dollar-sign fe-16"></i>
                         <span class="ml-lg-2">الممولين</span>
                     </a>
                 </li>
-                @endcan
+                @endcan --}}
                 @can('view','App\\Models\User')
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-start" href="{{route('users.index')}}">
@@ -48,6 +65,7 @@
             </ul>
         </div>
         <ul class="navbar-nav d-flex flex-row">
+            {{ $extra_nav ?? '' }}
             <li class="nav-item">
                 <li class="nav-item">
                     <a class="nav-link text-muted my-2" href="#" id="modeSwitcher" data-mode="light">
