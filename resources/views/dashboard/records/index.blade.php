@@ -16,13 +16,18 @@
             }
 
             body{
-                font-family: 'Cairo', sans-serif;
+                font-family: 'Arial', sans-serif;
             }
             .main-content{
                 margin: 15px 0 0 0 !important;
             }
             td, th {
                 font-size: 16px !important;
+
+            }
+            tbody td{
+                color: #000 !important;
+                font-weight: 400 !important;
             }
             table.dataTable th, table.dataTable td {
                 box-sizing: content-box !important;
@@ -496,7 +501,7 @@
                                     title: 'التقارير', // تخصيص العنوان عند التصدير
                                     className: 'd-none', // إخفاء الزر الأصلي
                                     exportOptions: {
-                                        columns: [1, 2, 3, 4, 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21], // تحديد الأعمدة التي سيتم تصديرها (يمكن تعديلها حسب الحاجة)
+                                        columns: [1, 2, 3, 4, 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], // تحديد الأعمدة التي سيتم تصديرها (يمكن تعديلها حسب الحاجة)
                                         modifier: {
                                             search: 'applied', // تصدير البيانات المفلترة فقط
                                             order: 'applied',  // تصدير البيانات مع الترتيب الحالي
@@ -525,19 +530,18 @@
                     },
                     columns: [
                         { data: 'edit', name: 'edit', orderable: false, searchable: false, render: function(data, type, row) {
-                            // return ` <button class="btn btn-sm btn-primary open-modal" data-bs-toggle="modal" data-id="${data}">تعديل <i class="fa fa-edit"></i></button>`;}
-                            // let link = `<a href="{{ route('records.edit', ':record') }}"
-                            // class="btn btn-sm btn-icon text-primary"><i class="fe fe-edit"></i></a>`.replace(':record', data);
-                            @can('CREATE','App\\Models\Record')
-                            let link = `<button class="btn btn-sm btn-icon text-primary edit_row"  data-id=":record"><i class="fe fe-edit"></i></button>`.replace(':record', data);
-                            return link ;
+                            @can('create','App\\Models\Record')
+                                let link = `<button class="btn btn-sm btn-icon text-primary edit_row"  data-id=":record"><i class="fe fe-edit"></i></button>`.replace(':record', data);
+                                return link ;
                             @else
-                            return '';
+                                return '';
                             @endcan
-                        }
-                        },
+                        }},
                         { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false}, // عمود الترقيم التلقائي
-                        { data: 'done', name: 'done' , orderable: false},
+                        { data: 'done', name: 'done' , orderable: false, render: function(data, type, row) {
+                            let link = `<input type="checkbox" ${data == 1 ? 'checked' : ''} disabled>`;
+                            return link ;
+                        }},
                         { data: 'date', name: 'date'  , orderable: false},
                         { data: 'name', name: 'name' , orderable: false, class: 'sticky' },
                         { data: 'financier_number', name: 'financier_number' , orderable: false},
@@ -566,12 +570,7 @@
                         { data: 'notes', name: 'notes'  , orderable: false},
                         { data: 'notes_2', name: 'notes_2'  , orderable: false},
                         { data: 'user_name', name: 'user_name'  , orderable: false},
-                        {
-                            data: 'delete',
-                            name: 'delete',
-                            orderable: false,
-                            searchable: false,
-                            render: function (data, type, row) {
+                        {data: 'delete', name: 'delete', orderable: false, searchable: false, render: function (data, type, row) {
                                 @can('delete','App\\Models\Record')
                                 return `
                                     <button
@@ -582,8 +581,7 @@
                                 @else
                                 return '';
                                 @endcan
-                            },
-                        },
+                        }},
                     ],
                     columnDefs: [
                         { targets: 1, searchable: false, orderable: false } // تعطيل الفرز والبحث على عمود الترقيم
@@ -784,6 +782,14 @@
                                 if (input.length) { // التحقق إذا كان العنصر موجودًا
                                     input.val(value); // تعيين القيمة
                                 }
+                                if(key == 'done') {
+                                    if(value == 1) {
+                                        $('#done').prop('checked', true);
+                                    }else{
+                                        $('#done').prop('checked', false);
+                                    }
+                                    $('#done').val('');
+                                }
                             });
                             $('#addRecord').remove();
                             $('#update').remove();
@@ -831,6 +837,12 @@
                         const input = $('#' + key); // البحث عن العنصر باستخدام id
                         if(key == 'id'){
                             //
+                        }else if(key == 'done'){
+                            if(input.is(':checked')) {
+                                record[key] = 1;
+                            }else{
+                                record[key] = 0;
+                            }
                         }else{
                             record[key] = input.val();
                         }
@@ -911,12 +923,17 @@
                     $.each(record, function(key, value) {
                         const input = $('#' + key); // البحث عن العنصر باستخدام id
                         if(key == 'id'){
-                            record['id'] = null;
+                            //
+                        }else if(key == 'done'){
+                            if(input.is(':checked')) {
+                                record[key] = 1;
+                            }else{
+                                record[key] = 0;
+                            }
                         }else{
                             record[key] = input.val();
                         }
                     });
-                    console.log(record);
                     $.ajax({
                         url: "{{ route('records.store') }}",
                         method: 'POST',

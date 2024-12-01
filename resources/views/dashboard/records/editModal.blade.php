@@ -1,6 +1,17 @@
 <div class="row">
+    <style>
+        label{
+            font-size: 20px;
+            color: #000;
+        }
+    </style>
     <div class="form-group col-md-12">
-        <x-form.input name="name" label="اسم المريض" required />
+        <x-form.input name="name" label="اسم المريض" required list="names_list" />
+        <datalist id="names_list">
+            @foreach ($names as $name)
+                <option value="{{$name}}">
+            @endforeach
+        </datalist>
     </div>
     <div class="form-group col-md-3">
         @can('date','App\\Models\Record')
