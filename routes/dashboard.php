@@ -19,6 +19,8 @@ Route::group([
     Route::post('records/print', [RecordController::class, 'print'])->name('records.print');
     Route::post('records/import', [RecordController::class, 'import'])->name('records.import');
 
+    Route::post('financiers/print', [FinancierController::class, 'print'])->name('financiers.print');
+
     Route::get('logs', [LogsController::class, 'index'])->name('logs.index');
 
 

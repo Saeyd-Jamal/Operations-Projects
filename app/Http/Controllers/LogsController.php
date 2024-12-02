@@ -15,7 +15,7 @@ class LogsController extends Controller
     public function index()
     {
         $this->authorize('view', Logs::class);
-        $logs = Logs::paginate(100);
+        $logs = Logs::orderBy('created_at', 'desc')->paginate(100);
         return view('dashboard.logs', compact('logs'));
     }
 

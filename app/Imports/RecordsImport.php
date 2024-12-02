@@ -3,11 +3,21 @@
 namespace App\Imports;
 
 use App\Models\Record;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+
 
 class RecordsImport implements ToModel,WithHeadingRow
 {
+    public function formatDate($date){
+        if(is_numeric($date)){
+            return Carbon::createFromFormat('Y-m-d', Date::excelToDateTimeObject($date)->format('Y-m-d'));
+        }else{
+            return $date;
+        }
+    }
     /**
     * @param array $row
     *
@@ -16,7 +26,7 @@ class RecordsImport implements ToModel,WithHeadingRow
     public function model(array $row)
     {
         return new Record([
-            'date' => $row['altarykh'],
+            'date' => $this->formatDate($row['altarykh']),
             'name' => $row['alasm'],
             'financier_number' => $row['mmol'],
             'age' => $row['alaamr'],

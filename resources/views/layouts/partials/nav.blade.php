@@ -38,14 +38,14 @@
                     </a>
                 </li>
                 @endcan
-                {{-- @can('view','App\\Models\Financier')
+                @can('view','App\\Models\Financier')
                 <li class="nav-item">
                     <a class="nav-link  d-flex align-items-start" href="{{route('financiers.index')}}">
                         <i class="fe fe-dollar-sign fe-16"></i>
                         <span class="ml-lg-2">الممولين</span>
                     </a>
                 </li>
-                @endcan --}}
+                @endcan
                 @can('view','App\\Models\User')
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-start" href="{{route('users.index')}}">

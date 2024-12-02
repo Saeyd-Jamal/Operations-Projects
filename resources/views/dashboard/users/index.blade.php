@@ -63,7 +63,7 @@
                                                 <a class="dropdown-item" style="margin: 0.5rem -0.75rem; text-align: right;"
                                                 href="{{route('users.show',$user->id)}}">عرض</a>
                                                 @endcan --}}
-                                                @can('edit', 'App\\Models\User')
+                                                @can('update', 'App\\Models\User')
                                                 <a class="dropdown-item" style="margin: 0.5rem -0.75rem; text-align: right;"
                                                     href="{{route('users.edit',$user->id)}}">تعديل</a>
                                                 @endcan

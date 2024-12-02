@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\RecordsImport;
+use App\Models\Financier;
 use App\Models\Logs;
 use App\Models\Record;
 use Carbon\Carbon;
@@ -33,8 +34,18 @@ class RecordController extends Controller
                 $records->whereBetween('age', [$request->from_age, $request->to_age]);
             }
 
+            if($request->fieldNull != null) {
+                $records->whereNull($request->fieldNull);
+            }
+
             return DataTables::of($records)
                     ->addIndexColumn()  // إضافة عمود الترقيم التلقائي
+                    ->addColumn('financier', function ($record) {
+                        $financier = Financier::where('financier_number', $record->financier_number)->first();
+                        if($financier != null) {
+                            return $financier->name;
+                        }
+                    })
                     ->addColumn('edit', function ($record) {
                         return $record->id;
                     })

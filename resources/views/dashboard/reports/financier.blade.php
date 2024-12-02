@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>جدول مشروع العمليات</title>
+    <title>تقرير لممول</title>
     <style>
         body {
             font-family: 'XBRiyaz', sans-serif;
@@ -88,7 +88,7 @@
         <table class="blueTable">
             <thead>
                 <tr>
-                    <td colspan="10" style="border:0;">
+                    <td colspan="12" style="border:0;">
                         <p>
                             <span>مستشفى يافا الطبي</span> /
                             <span>مشروع إجراء عمليات جراحية وتدخلات طبية</span>
@@ -97,7 +97,8 @@
                 </tr>
                 <tr>
                     <td colspan="12" align="center" style="color: #000;border:0;">
-                        <h1>مشروع العمليات الطبية</h1>
+                        <h1>تقرير الممول : {{$financier->name}}</h1>
+                        <span>رقم الممول : {{$financier->financier_number}}</span>
                     </td>
                 </tr>
                 <tr style="background: #dddddd;">
@@ -117,24 +118,24 @@
             </thead>
             <tbody>
                 @foreach ($records as $record)
-                    <tr>
-                        <td>{{$loop->iteration}}</td>
-                        <td>
-                            @if ($record['done'] == 1)
-                            <p style="font-family: Helvetica, Arial, Sans-Serif; font-size: 16px;">&#9745;</p>
-                            @endif
-                        </td>
-                        <td>{{$record['date']}}</td>
-                        <td style="white-space: nowrap;">{{$record['name']}}</td>
-                        <td>{{$record['financier_number']}}</td>
-                        <td>{{$record['age']}}</td>
-                        <td>{{$record['patient_ID']}}</td>
-                        <td>{{$record['phone_number1']}}</td>
-                        <td>{{$record['phone_number2']}}</td>
-                        <td style="white-space: nowrap;">{{$record['operation']}}</td>
-                        <td style="white-space: nowrap;">{{$record['doctor']}}</td>
-                        <td>{{$record['amount']}}</td>
-                    </tr>
+                <tr>
+                    <td>{{$loop->iteration}}</td>
+                    <td>
+                        @if ($record['done'] == 1)
+                        <p style="font-family: Helvetica, Arial, Sans-Serif; font-size: 16px;">&#9745;</p>
+                        @endif
+                    </td>
+                    <td>{{$record['date']}}</td>
+                    <td style="white-space: nowrap;">{{$record['name']}}</td>
+                    <td>{{$record['financier_number']}}</td>
+                    <td>{{$record['age']}}</td>
+                    <td>{{$record['patient_ID']}}</td>
+                    <td>{{$record['phone_number1']}}</td>
+                    <td>{{$record['phone_number2']}}</td>
+                    <td style="white-space: nowrap;">{{$record['operation']}}</td>
+                    <td style="white-space: nowrap;">{{$record['doctor']}}</td>
+                    <td>{{$record['amount']}}</td>
+                </tr>
             @endforeach
             </tbody>
         </table>

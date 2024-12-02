@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>جدول مشروع العمليات</title>
+    <title>تقرير الممولين</title>
     <style>
         body {
             font-family: 'XBRiyaz', sans-serif;
@@ -88,7 +88,7 @@
         <table class="blueTable">
             <thead>
                 <tr>
-                    <td colspan="10" style="border:0;">
+                    <td colspan="12" style="border:0;">
                         <p>
                             <span>مستشفى يافا الطبي</span> /
                             <span>مشروع إجراء عمليات جراحية وتدخلات طبية</span>
@@ -96,46 +96,56 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="12" align="center" style="color: #000;border:0;">
-                        <h1>مشروع العمليات الطبية</h1>
+                    <td colspan="11" align="center" style="color: #000;border:0; margin-bottom: 20px;">
+                        <h1>تقرير الممولين</h1>
                     </td>
                 </tr>
                 <tr style="background: #dddddd;">
                     <th>#</th>
-                    <th>تمت <br> العملية</th>
-                    <th>التاريخ</th>
-                    <th style="white-space: nowrap;">الاسم</th>
-                    <th>الممول</th>
-                    <th>العمر</th>
-                    <th>الهوية</th>
-                    <th>جوال 1</th>
-                    <th>جوال 2</th>
-                    <th style="white-space: nowrap;">العملية</th>
-                    <th style="white-space: nowrap;">الطبيب</th>
-                    <th>التكلفة</th>
+                    <th>رقم الممول</th>
+                    <th>الاسم</th>
+                    <th>المرحلة</th>
+                    <th>اسم المدير</th>
+                    <th>الملبع ش</th>
+                    <th>عدد الحالات</th>
+                    <th  style="text-align: center;">إنتهاء <br> المشروع</th>
+                    <th  style="text-align: center;">دفع <br> المشروع</th>
+                    <th  style="text-align: center;">توزيع <br> المشروع</th>
+                    <th  style="text-align: center;">أرشفة <br> المشروع</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($records as $record)
-                    <tr>
+                @foreach($financiers as $financier)
+                    <tr >
                         <td>{{$loop->iteration}}</td>
-                        <td>
-                            @if ($record['done'] == 1)
-                            <p style="font-family: Helvetica, Arial, Sans-Serif; font-size: 16px;">&#9745;</p>
+                        <td>{{$financier->financier_number}}</td>
+                        <td>{{$financier->name}}</td>
+                        <td>{{$financier->stage}}</td>
+                        <td>{{$financier->manager_name}}</td>
+                        <td>{{$financier->amount_ils}}</td>
+                        <td  style="text-align: center;">{{$financier->number_cases}}</td>
+                        <td style="text-align: center;">
+                            @if ($financier->completion_project == 1)
+                                <p style="font-family: Helvetica, Arial, Sans-Serif; font-size: 16px;">&#9745;</p>
                             @endif
                         </td>
-                        <td>{{$record['date']}}</td>
-                        <td style="white-space: nowrap;">{{$record['name']}}</td>
-                        <td>{{$record['financier_number']}}</td>
-                        <td>{{$record['age']}}</td>
-                        <td>{{$record['patient_ID']}}</td>
-                        <td>{{$record['phone_number1']}}</td>
-                        <td>{{$record['phone_number2']}}</td>
-                        <td style="white-space: nowrap;">{{$record['operation']}}</td>
-                        <td style="white-space: nowrap;">{{$record['doctor']}}</td>
-                        <td>{{$record['amount']}}</td>
+                        <td style="text-align: center;">
+                            @if ($financier->push_project == 1)
+                                <p style="font-family: Helvetica, Arial, Sans-Serif; font-size: 16px;">&#9745;</p>
+                            @endif
+                        </td>
+                        <td style="text-align: center;">
+                            @if ($financier->project_distribution == 1)
+                                <p style="font-family: Helvetica, Arial, Sans-Serif; font-size: 16px;">&#9745;</p>
+                            @endif
+                        </td>
+                        <td style="text-align: center;">
+                            @if ($financier->project_archive == 1)
+                                <p style="font-family: Helvetica, Arial, Sans-Serif; font-size: 16px;">&#9745;</p>
+                            @endif
+                        </td>
                     </tr>
-            @endforeach
+                    @endforeach
             </tbody>
         </table>
         <htmlpagefooter name="page-footer">

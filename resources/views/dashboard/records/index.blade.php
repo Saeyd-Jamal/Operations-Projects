@@ -199,6 +199,7 @@
                                                 <div class="filterDropdownMenu dropdown-menu dropdown-menu-right p-2" aria-labelledby="financier_filter">
                                                     <input type="number" name="financier_number" class="form-control mr-2  py-0 px-2" list="financiers_list" style="width: 200px"/>
                                                     <datalist id="financiers_list">
+                                                        <option value="000">فارغ</option>
                                                         @foreach ($financiers as $financier)
                                                             <option value="{{$financier}}" >
                                                         @endforeach
@@ -213,6 +214,7 @@
                                         </div>
                                     </div>
                                 </th>
+                                <th>اسم الممول</th>
                                 <th>
                                     <div class='d-flex align-items-center justify-content-between'>
                                         <span>العمر</span>
@@ -245,7 +247,10 @@
                                                     <i class="fe fe-filter text-white"></i>
                                                 </button>
                                                 <div class="filterDropdownMenu dropdown-menu dropdown-menu-right p-2" aria-labelledby="patient_ID_filter">
-                                                    <input type="number" maxlength="9" name="patient_ID" class="form-control mr-2  py-0 px-2" style="width: 200px"/>
+                                                    <input type="number" maxlength="9" list="patient_ID_list" name="patient_ID" class="form-control mr-2  py-0 px-2" style="width: 200px"/>
+                                                    <datalist id="patient_ID_list">
+                                                        <option value="000">فارغ</option>
+                                                    </datalist>
                                                     <div>
                                                         <button class='btn btn-success text-white filter-apply-btn' data-target="7" data-field="patient_ID">
                                                             <i class='fe fe-check'></i>
@@ -360,6 +365,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                <td></td>
                                 <td class='text-white' id="total_amount"></td>
                                 <td class='text-white' id="total_doctor_share"></td>
                                 <td></td>
@@ -378,9 +384,7 @@
         </div>
     </div>
 
-
-
-
+    <input type="hidden" name="fieldNull" id="fieldNull">
     <!-- Fullscreen modal -->
     <div class="modal fade modal-full" id="editRecord" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <button aria-label="" type="button" class="close px-2" data-dismiss="modal" aria-hidden="true">
@@ -389,7 +393,7 @@
         <div class="modal-dialog modal-dialog-centered w-100" role="document" style="max-width: 95%;">
             <div class="modal-content">
                 <div class="modal-body text-center">
-                    <form id="editForm">
+                    <form id="editForm" enctype="multipart/form-data">
                         @include('dashboard.records.editModal')
                     </form>
                 </div>
@@ -523,6 +527,7 @@
                             d.to_date = $('#to_date').val();
                             d.from_age = $('#from_age').val();
                             d.to_age = $('#to_age').val();
+                            d.fieldNull = $('#fieldNull').val();
                         },
                         error: function(xhr, status, error) {
                             console.error('AJAX error:', status, error);
@@ -545,6 +550,7 @@
                         { data: 'date', name: 'date'  , orderable: false},
                         { data: 'name', name: 'name' , orderable: false, class: 'sticky' },
                         { data: 'financier_number', name: 'financier_number' , orderable: false},
+                        { data: 'financier', name: 'financier' , orderable: false},
                         { data: 'age', name: 'age', orderable: false},
                         { data: 'patient_ID', name: 'patient_ID'  , orderable: false},
                         { data: 'phone_number1', name: 'phone_number1'  , orderable: false},
@@ -671,11 +677,23 @@
                 });
                 $('#records-table_filter').addClass('d-none');
                 // تطبيق الفلترة عند الضغط على زر "check"
+                let serchNull = false;
                 $('.filter-apply-btn').on('click', function() {
                     let target = $(this).data('target');
                     let field = $(this).data('field');
                     var filterValue = $("input[name="+ field + "]").val();
-                    table.column(target).search(filterValue).draw();
+                    if(filterValue == '000'){
+                        const fieldNull = $('#fieldNull').val(field);
+                        serchNull = true;
+                        table.ajax.reload(); // إعادة تحميل الجدول مع التواريخ المحدثة
+                    }else{
+                        if(serchNull == true){
+                            serchNull = false;
+                            const fieldNull = $('#fieldNull').val(null);
+                            table.ajax.reload();
+                        }
+                        table.column(target).search(filterValue).draw();
+                    }
                 });
                 // تطبيق التصفية عند النقر على زر "Apply"
                 $('#filter-date-btn').on('click', function () {
@@ -774,6 +792,7 @@
                             record.private = response.private;
                             record.notes = response.notes;
                             record.notes_2 = response.notes_2;
+                            record.file = response.file;
                             record.user_name = response.user_name;
                             record.user_id = response.user_id;
                             record.user = response.user;
