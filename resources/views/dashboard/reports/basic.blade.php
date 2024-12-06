@@ -137,6 +137,13 @@
                     </tr>
             @endforeach
             </tbody>
+            <tfoot>
+                <tr>
+                    <td>00</td>
+                    <td colspan="10">المجموع</td>
+                    <td>{{$recordsTotalArray['amount']}}</td>
+                </tr>
+            </tfoot>
         </table>
         <htmlpagefooter name="page-footer">
             <table width="100%" style="vertical-align: bottom; color: #000000;  margin: 1em">

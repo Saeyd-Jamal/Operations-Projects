@@ -366,12 +366,15 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                {{-- 13 --}}
                                 <td class='text-white' id="total_amount"></td>
+                                @can('financial','App\\Models\Record')
                                 <td class='text-white' id="total_doctor_share"></td>
                                 <td></td>
                                 <td class='text-white' id="total_anesthesiologists_share"></td>
                                 <td class='text-white' id="total_bed"></td>
                                 <td class='text-white' id="total_private"></td>
+                                @endcan
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -560,6 +563,7 @@
                         { data: 'amount', name: 'amount', orderable: false, render: function(data, type, row) {
                             return  formatNumber(data,2);
                         }},
+                        @can('financial','App\\Models\Record')
                         { data: 'doctor_share', name: 'doctor_share', orderable: false, render: function(data, type, row) {
                             return  formatNumber(data,2);
                         }},
@@ -573,6 +577,7 @@
                         { data: 'private', name: 'private', orderable: false, render: function(data, type, row) {
                             return  formatNumber(data,2);
                         }},
+                        @endcan
                         { data: 'notes', name: 'notes'  , orderable: false},
                         { data: 'notes_2', name: 'notes_2'  , orderable: false},
                         { data: 'user_name', name: 'user_name'  , orderable: false},
@@ -614,37 +619,37 @@
                         // 1. حساب عدد الأسطر في الصفحة الحالية
                         // count_records 1
                         var rowCount = display.length;
-                        // total_amount 12
+                        // total_amount 13
                         var total_amount_sum = api
-                            .column(12, { page: 'current' }) // العمود الرابع
-                            .data()
-                            .reduce(function(a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0);
-                        // total_doctor_share 13
-                        var total_doctor_share_sum = api
                             .column(13, { page: 'current' }) // العمود الرابع
                             .data()
                             .reduce(function(a, b) {
                                 return intVal(a) + intVal(b);
                             }, 0);
-                        // total_anesthesiologists_share 15
-                        var total_anesthesiologists_share_sum = api
-                            .column(15, { page: 'current' }) // العمود الرابع
+                        // total_doctor_share 14
+                        var total_doctor_share_sum = api
+                            .column(14, { page: 'current' }) // العمود الرابع
                             .data()
                             .reduce(function(a, b) {
                                 return intVal(a) + intVal(b);
                             }, 0);
-                        // total_bed 16
-                        var total_bed_sum = api
+                        // total_anesthesiologists_share 16
+                        var total_anesthesiologists_share_sum = api
                             .column(16, { page: 'current' }) // العمود الرابع
                             .data()
                             .reduce(function(a, b) {
                                 return intVal(a) + intVal(b);
                             }, 0);
-                        // total_private 17
-                        var total_private_sum = api
+                        // total_bed 17
+                        var total_bed_sum = api
                             .column(17, { page: 'current' }) // العمود الرابع
+                            .data()
+                            .reduce(function(a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0);
+                        // total_private 18
+                        var total_private_sum = api
+                            .column(18, { page: 'current' }) // العمود الرابع
                             .data()
                             .reduce(function(a, b) {
                                 return intVal(a) + intVal(b);

@@ -135,6 +135,17 @@
                 </tr>
             @endforeach
             </tbody>
+            <tfoot>
+                <tr>
+                    <td>00</td>
+                    <td colspan="7">المجموع</td>  <!-- التاريخ -->
+                    <td>{{ $recordsTotalArray['amount'] }}</td>  <!-- المبلغ -->
+                    <td>{{ $recordsTotalArray['doctor_share'] }}</td>  <!-- حصة الطبيب -->
+                    <td>{{ $recordsTotalArray['anesthesiologists_share'] }}</td>  <!-- حصة الأطباء المساعدين -->
+                    <td>{{ $recordsTotalArray['bed'] }}</td>  <!-- السرير -->
+                    <td>{{ $recordsTotalArray['private'] }}</td>  <!-- خاص -->
+                </tr>
+            </tfoot>
         </table>
         <htmlpagefooter name="page-footer">
             <table width="100%" style="vertical-align: bottom; color: #000000;  margin: 1em">

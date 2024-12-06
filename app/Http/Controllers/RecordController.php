@@ -189,9 +189,26 @@ class RecordController extends Controller
             'user_id' => $request->user()->id,
             'user_name' => $request->user()->name,
         ]);
-
+        // دوال الموجوع اخر سطر في التقرير
+        $recordsTotal = collect($records)->map(function ($record){
+            return [
+                "amount" => $record->amount ?? '0',
+                "doctor_share" => $record->doctor_share ?? '0',
+                "anesthesiologists_share" => $record->anesthesiologists_share ?? '0',
+                "bed" => $record->bed ?? '0',
+                "private" => $record->private ?? '0',
+            ];
+        });
+        $recordsTotalArray = [
+            'amount' => collect($recordsTotal->pluck('amount')->toArray())->sum(),
+            'doctor_share' => collect($recordsTotal->pluck('doctor_share')->toArray())->sum(),
+            'anesthesiologists_share' => collect($recordsTotal->pluck('anesthesiologists_share')->toArray())->sum(),
+            'bed' => collect($recordsTotal->pluck('bed')->toArray())->sum(),
+            'private' => collect($recordsTotal->pluck('private')->toArray())->sum(),
+        ];
         if($request->report == 'basic'){
-            $pdf = PDF::loadView('dashboard.reports.basic',['records' =>  $recordsCollection],[],[
+
+            $pdf = PDF::loadView('dashboard.reports.basic',['records' =>  $recordsCollection,'recordsTotalArray' => $recordsTotalArray],[],[
                 'mode' => 'utf-8',
                 'format' => 'A4',
                 'default_font_size' => 12,
@@ -200,7 +217,7 @@ class RecordController extends Controller
             return $pdf->stream();
         }
         if($request->report == 'mali'){
-            $pdf = PDF::loadView('dashboard.reports.mali',['records' =>  $recordsCollection],[],[
+            $pdf = PDF::loadView('dashboard.reports.mali',['records' =>  $recordsCollection,'recordsTotalArray' => $recordsTotalArray],[],[
                 'mode' => 'utf-8',
                 'format' => 'A4-L',
                 'default_font_size' => 12,
