@@ -24,7 +24,7 @@ class RecordController extends Controller
         $this->authorize('view', Record::class);
         if($request->ajax()) {
             // جلب بيانات المستخدمين من الجدول
-            $records = Record::query()->orderBy('date', 'asc');;
+            $records = Record::query()->where('archived', 0)->orderBy('date', 'asc');;
             // التصفية بناءً على التواريخ
             if ($request->from_date != null && $request->to_date != null) {
                 $records->whereBetween('date', [$request->from_date, $request->to_date]);
@@ -49,6 +49,9 @@ class RecordController extends Controller
                     ->addColumn('edit', function ($record) {
                         return $record->id;
                     })
+                    ->addColumn('archived', function ($record) {
+                        return $record->id;
+                    })
                     ->addColumn('delete', function ($record) {
                         return $record->id;
                     })
@@ -62,6 +65,69 @@ class RecordController extends Controller
         $anesthesias = Record::select('anesthesia')->distinct()->pluck('anesthesia')->toArray();
         $user_names = Record::select('user_name')->distinct()->pluck('user_name')->toArray();
         return view('dashboard.records.index', compact('names', 'financiers', 'operations', 'doctors', 'anesthesias', 'user_names'));
+    }
+
+    public function archivedRow(Request $request){
+        $this->authorize('view', Record::class);
+        if($request->ajax()) {
+            $record = Record::find($request->id);
+            $type = $request->type;
+            if($type == 'restore') {
+                $record->archived = 0;
+            }
+            if($type == 'archived') {
+                $record->archived = 1;
+            }
+            $record->save();
+            return response()->json($record);
+        }
+    }
+    public function archived(Request $request)
+    {
+        $this->authorize('view', Record::class);
+        if($request->ajax()) {
+            // جلب بيانات المستخدمين من الجدول
+            $records = Record::query()->where('archived', 1)->orderBy('date', 'asc');;
+            // التصفية بناءً على التواريخ
+            if ($request->from_date != null && $request->to_date != null) {
+                $records->whereBetween('date', [$request->from_date, $request->to_date]);
+            }
+
+            if ($request->from_age != null && $request->to_age != null) {
+                $records->whereBetween('age', [$request->from_age, $request->to_age]);
+            }
+
+            if($request->fieldNull != null) {
+                $records->whereNull($request->fieldNull);
+            }
+
+            return DataTables::of($records)
+                    ->addIndexColumn()  // إضافة عمود الترقيم التلقائي
+                    ->addColumn('financier', function ($record) {
+                        $financier = Financier::where('financier_number', $record->financier_number)->first();
+                        if($financier != null) {
+                            return $financier->name;
+                        }
+                    })
+                    ->addColumn('edit', function ($record) {
+                        return $record->id;
+                    })
+                    ->addColumn('archived', function ($record) {
+                        return $record->id;
+                    })
+                    ->addColumn('delete', function ($record) {
+                        return $record->id;
+                    })
+                    ->make(true);
+        }
+
+        $names = Record::select('name')->distinct()->pluck('name')->toArray();
+        $financiers = Record::select('financier_number')->distinct()->pluck('financier_number')->toArray();
+        $operations = Record::select('operation')->distinct()->pluck('operation')->toArray();
+        $doctors = Record::select('doctor')->distinct()->pluck('doctor')->toArray();
+        $anesthesias = Record::select('anesthesia')->distinct()->pluck('anesthesia')->toArray();
+        $user_names = Record::select('user_name')->distinct()->pluck('user_name')->toArray();
+        return view('dashboard.records.archived', compact('names', 'financiers', 'operations', 'doctors', 'anesthesias', 'user_names'));
     }
 
     public function create(Request $request)
@@ -86,7 +152,7 @@ class RecordController extends Controller
             'name' => 'required|string',
             'date' => 'required|date',
             'patient_ID' => 'required|integer',
-            'age' => 'integer|min:0|max:150',
+            'age' => 'numeric|min:0|max:150',
             'phone_number1' => 'required',
             'operation' => 'required',
             'doctor' => 'required',
@@ -133,7 +199,7 @@ class RecordController extends Controller
             'name' => 'required|string',
             'date' => 'required|date',
             'patient_ID' => 'required|integer',
-            'age' => 'integer|min:0|max:150',
+            'age' => 'numeric|min:0|max:150',
             'phone_number1' => 'required',
             'operation' => 'required',
             'doctor' => 'required',
@@ -192,11 +258,11 @@ class RecordController extends Controller
         // دوال الموجوع اخر سطر في التقرير
         $recordsTotal = collect($records)->map(function ($record){
             return [
-                "amount" => $record->amount ?? '0',
-                "doctor_share" => $record->doctor_share ?? '0',
-                "anesthesiologists_share" => $record->anesthesiologists_share ?? '0',
-                "bed" => $record->bed ?? '0',
-                "private" => $record->private ?? '0',
+                "amount" => $record['amount'] ?? '0',
+                "doctor_share" => $record['doctor_share'] ?? '0',
+                "anesthesiologists_share" => $record['anesthesiologists_share'] ?? '0',
+                "bed" => $record['bed'] ?? '0',
+                "private" => $record['private'] ?? '0',
             ];
         });
         $recordsTotalArray = [
@@ -206,8 +272,8 @@ class RecordController extends Controller
             'bed' => collect($recordsTotal->pluck('bed')->toArray())->sum(),
             'private' => collect($recordsTotal->pluck('private')->toArray())->sum(),
         ];
-        if($request->report == 'basic'){
 
+        if($request->report == 'basic'){
             $pdf = PDF::loadView('dashboard.reports.basic',['records' =>  $recordsCollection,'recordsTotalArray' => $recordsTotalArray],[],[
                 'mode' => 'utf-8',
                 'format' => 'A4',

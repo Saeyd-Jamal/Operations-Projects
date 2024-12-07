@@ -141,7 +141,7 @@
                 <tr>
                     <td>00</td>
                     <td colspan="10">المجموع</td>
-                    <td>{{$recordsTotalArray['amount']}}</td>
+                    <td>{{number_format($recordsTotalArray['amount'])}}</td>
                 </tr>
             </tfoot>
         </table>

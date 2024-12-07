@@ -84,13 +84,6 @@
             </button>
         </li>
         @endcan
-        @can('create', 'App\\Models\Record')
-        <li class="nav-item">
-            <button type="button" class="btn btn-icon text-success my-2" id="createNew">
-                <i class="fe fe-plus fe-16"></i>
-            </button>
-        </li>
-        @endcan
         <li class="nav-item dropdown d-flex align-items-center justify-content-center mx-2">
             <a class="nav-link dropdown-toggle text-white pr-0" href="#" id="navbarDropdownMenuLink"
                 role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -419,40 +412,6 @@
         </div>
     </div> <!-- small modal -->
 
-    @can('import','App\\Models\Record')
-    <div class="modal fade" id="importExcel" tabindex="-1" role="dialog" aria-labelledby="importExcelTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="importExcelTitle">استيراد من ملف Excel</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="{{route('records.import')}}" method="post" enctype="multipart/form-data">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="form-group col-md-12">
-                            <label for="report">إختيار الملف</label>
-                            <input type="file" name="file" id="file" class="form-control" required>
-                        </div>
-                        <span>تحميل نموذج الإستيراد
-                            @can('financial','App\\Models\Record')
-                            <a href="{{asset('files/records_template.xlsx')}}" class="nav-link d-inline" download="نموذج الإستيراد">من هنا</a>
-                            @else
-                            <a href="{{asset('files/records_template2.xlsx')}}" class="nav-link d-inline" download="نموذج الإستيراد">من هنا</a>
-                            @endcan
-                        </span>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-info">استيراد</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    @endcan
-
     <div class="modal fade" id="printReport" tabindex="-1" role="dialog" aria-labelledby="printReportTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -538,7 +497,7 @@
                         "url": "{{ asset('files/Arabic.json')}}"
                     },
                     ajax: {
-                        url: '{{ route("records.index") }}',
+                        url: '{{ route("records.archived") }}',
                         data: function (d) {
                             // إضافة تواريخ التصفية إلى الطلب المرسل
                             d.from_date = $('#from_date').val();
@@ -578,41 +537,27 @@
                         { data: 'amount', name: 'amount', orderable: false, render: function(data, type, row) {
                             return  formatNumber(data,2);
                         }},
+                        @can('financial','App\\Models\Record')
                         { data: 'doctor_share', name: 'doctor_share', orderable: false, render: function(data, type, row) {
-                            @can('financial','App\\Models\Record')
                             return  formatNumber(data,2);
-                            @else
-                            return '';
-                            @endcan
                         }},
                         { data: 'anesthesia', name: 'anesthesia', orderable: false},
                         { data: 'anesthesiologists_share', name: 'anesthesiologists_share', orderable: false, render: function(data, type, row) {
-                            @can('financial','App\\Models\Record')
                             return  formatNumber(data,2);
-                            @else
-                            return '';
-                            @endcan
                         }},
                         { data: 'bed', name: 'bed', orderable: false, render: function(data, type, row) {
-                            @can('financial','App\\Models\Record')
                             return  formatNumber(data,2);
-                            @else
-                            return '';
-                            @endcan
                         }},
                         { data: 'private', name: 'private', orderable: false, render: function(data, type, row) {
-                            @can('financial','App\\Models\Record')
                             return  formatNumber(data,2);
-                            @else
-                            return '';
-                            @endcan
                         }},
+                        @endcan
                         { data: 'notes', name: 'notes'  , orderable: false},
                         { data: 'notes_2', name: 'notes_2'  , orderable: false},
                         { data: 'user_name', name: 'user_name'  , orderable: false},
                         { data: 'archived', name: 'archived', orderable: false, render: function(data, type, row) {
                             @can('archived','App\\Models\Record')
-                                let link = `<button class="btn btn-sm btn-icon text-primary archived_row"  data-id=":record"><i class="fe fe-archive"></i></button>`.replace(':record', data);
+                                let link = `<button class="btn btn-sm btn-icon text-primary archived_row"  data-id=":record"><i class="fe fe-chevrons-up"></i></button>`.replace(':record', data);
                                 return link ;
                             @else
                             return '';
@@ -926,93 +871,6 @@
                         },
                     })
                 });
-                $(document).on('click', '#createNew', function () {
-                    $.ajax({
-                        url: '{{ route("records.create") }}',
-                        method: 'GET',
-                        success: function (response) {
-                            record.id = response.id;
-                            record.done = response.done;
-                            record.date = response.date;
-                            record.name = response.name;
-                            record.financier_number = response.financier_number;
-                            record.age = response.age;
-                            record.patient_ID = response.patient_ID;
-                            record.phone_number1 = response.phone_number1;
-                            record.phone_number2 = response.phone_number2;
-                            record.operation = response.operation;
-                            record.doctor = response.doctor;
-                            record.amount = response.amount;
-                            record.doctor_share = response.doctor_share;
-                            record.anesthesia = response.anesthesia;
-                            record.anesthesiologists_share = response.anesthesiologists_share;
-                            record.bed = response.bed;
-                            record.private = response.private;
-                            record.notes = response.notes;
-                            record.notes_2 = response.notes_2;
-                            record.user_name = response.user_name;
-                            record.user_id = response.user_id;
-                            record.user = response.user;
-                            $.each(record, function(key, value) {
-                                const input = $('#' + key); // البحث عن العنصر باستخدام id
-                                if (input.length) { // التحقق إذا كان العنصر موجودًا
-                                    input.val(value); // تعيين القيمة
-                                }
-                            });
-                            $('#addRecord').remove();
-                            $('#update').remove();
-                            $('#btns_form').append(`
-                                <button type="button" id="addRecord" class="btn btn-primary mx-2">
-                                    <i class="fe fe-plus"></i>
-                                    أضف
-                                </button>
-                            `);
-                            $('.editForm').css('display','none');
-                            $('#editRecord').modal('show');
-                        },
-                        error: function (xhr, status, error) {
-                            console.error('AJAX error:', status, error);
-                            alert('هنالك خطأ في الإتصال بالسيرفر.');
-                        },
-                    })
-                });
-                $(document).on('click', '#addRecord', function () {
-                    const id = $(this).data('id'); // الحصول على ID الصف
-                    createRecordForm(id);
-                });
-                function createRecordForm(id){
-                    $.each(record, function(key, value) {
-                        const input = $('#' + key); // البحث عن العنصر باستخدام id
-                        if(key == 'id'){
-                            //
-                        }else if(key == 'done'){
-                            if(input.is(':checked')) {
-                                record[key] = 1;
-                            }else{
-                                record[key] = 0;
-                            }
-                        }else{
-                            record[key] = input.val();
-                        }
-                    });
-                    $.ajax({
-                        url: "{{ route('records.store') }}",
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        data: record,
-                        success: function (response) {
-                            $('#editRecord').modal('hide');
-                            table.ajax.reload();
-                            alert('تم إضافة سجل جديد بنجاح');
-                        },
-                        error: function (xhr, status, error) {
-                            console.error('AJAX error:', status, error);
-                            alert('هنالك خطأ في الإتصال بالسيرفر.');
-                        },
-                    })
-                };
                 $(document).on('click', '.archived_row', function () {
                     const id = $(this).data('id'); // الحصول على ID الصف
                     archivedRecordForm(id); // استدعاء وظيفة الحذف
@@ -1024,7 +882,7 @@
                         headers: {
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
                         },
-                        data: { id: id , type : 'archived' },
+                        data: { id: id , type : 'restore' },
                         success: function (response) {
                             table.ajax.reload();
                             alert('تم تحديث حالة السجل بنجاح');

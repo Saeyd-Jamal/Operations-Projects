@@ -16,6 +16,8 @@ Route::group([
         return redirect()->route('records.index');
     })->name('dashboard');
 
+    Route::get('records/archived', [RecordController::class, 'archived'])->name('records.archived');
+    Route::post('records/archivedRow', [RecordController::class, 'archivedRow'])->name('records.archivedRow');
     Route::post('records/print', [RecordController::class, 'print'])->name('records.print');
     Route::post('records/import', [RecordController::class, 'import'])->name('records.import');
 

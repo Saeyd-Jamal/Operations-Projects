@@ -38,6 +38,15 @@
                     </a>
                 </li>
                 @endcan
+                @can('archive','App\\Models\Record')
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-start" href="{{route('records.archived')}}">
+                        <i class="fe fe-archive fe-16"></i>
+                        <span class="ml-lg-2">الأرشيف</span>
+                        {{-- <span class="badge badge-pill badge-info">{{ App\Models\Record::count() }}</span> --}}
+                    </a>
+                </li>
+                @endcan
                 @can('view','App\\Models\Financier')
                 <li class="nav-item">
                     <a class="nav-link  d-flex align-items-start" href="{{route('financiers.index')}}">

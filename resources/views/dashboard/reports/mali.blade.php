@@ -139,11 +139,11 @@
                 <tr>
                     <td>00</td>
                     <td colspan="7">المجموع</td>  <!-- التاريخ -->
-                    <td>{{ $recordsTotalArray['amount'] }}</td>  <!-- المبلغ -->
-                    <td>{{ $recordsTotalArray['doctor_share'] }}</td>  <!-- حصة الطبيب -->
-                    <td>{{ $recordsTotalArray['anesthesiologists_share'] }}</td>  <!-- حصة الأطباء المساعدين -->
-                    <td>{{ $recordsTotalArray['bed'] }}</td>  <!-- السرير -->
-                    <td>{{ $recordsTotalArray['private'] }}</td>  <!-- خاص -->
+                    <td>{{ number_format($recordsTotalArray['amount']) }}</td>  <!-- المبلغ -->
+                    <td>{{ number_format($recordsTotalArray['doctor_share']) }}</td>  <!-- حصة الطبيب -->
+                    <td>{{ number_format($recordsTotalArray['anesthesiologists_share']) }}</td>  <!-- حصة الأطباء المساعدين -->
+                    <td>{{ number_format($recordsTotalArray['bed']) }}</td>  <!-- السرير -->
+                    <td>{{ number_format($recordsTotalArray['private']) }}</td>  <!-- خاص -->
                 </tr>
             </tfoot>
         </table>
