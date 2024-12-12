@@ -59,12 +59,13 @@ class RecordController extends Controller
         }
 
         $names = Record::select('name')->distinct()->pluck('name')->toArray();
+        $pat_ids = Record::select('patient_ID')->distinct()->pluck('patient_ID')->toArray();
         $financiers = Record::select('financier_number')->distinct()->pluck('financier_number')->toArray();
         $operations = Record::select('operation')->distinct()->pluck('operation')->toArray();
         $doctors = Record::select('doctor')->distinct()->pluck('doctor')->toArray();
         $anesthesias = Record::select('anesthesia')->distinct()->pluck('anesthesia')->toArray();
         $user_names = Record::select('user_name')->distinct()->pluck('user_name')->toArray();
-        return view('dashboard.records.index', compact('names', 'financiers', 'operations', 'doctors', 'anesthesias', 'user_names'));
+        return view('dashboard.records.index', compact('names','pat_ids', 'financiers', 'operations', 'doctors', 'anesthesias', 'user_names'));
     }
 
     public function archivedRow(Request $request){
@@ -122,12 +123,13 @@ class RecordController extends Controller
         }
 
         $names = Record::select('name')->distinct()->pluck('name')->toArray();
+        $pat_ids = Record::select('patient_ID')->distinct()->pluck('patient_ID')->toArray();
         $financiers = Record::select('financier_number')->distinct()->pluck('financier_number')->toArray();
         $operations = Record::select('operation')->distinct()->pluck('operation')->toArray();
         $doctors = Record::select('doctor')->distinct()->pluck('doctor')->toArray();
         $anesthesias = Record::select('anesthesia')->distinct()->pluck('anesthesia')->toArray();
         $user_names = Record::select('user_name')->distinct()->pluck('user_name')->toArray();
-        return view('dashboard.records.archived', compact('names', 'financiers', 'operations', 'doctors', 'anesthesias', 'user_names'));
+        return view('dashboard.records.archived', compact('names','pat_ids', 'financiers', 'operations', 'doctors', 'anesthesias', 'user_names'));
     }
 
     public function create(Request $request)
