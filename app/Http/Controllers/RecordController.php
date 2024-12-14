@@ -278,7 +278,7 @@ class RecordController extends Controller
         if($request->report == 'basic'){
             $pdf = PDF::loadView('dashboard.reports.basic',['records' =>  $recordsCollection,'recordsTotalArray' => $recordsTotalArray],[],[
                 'mode' => 'utf-8',
-                'format' => 'A4',
+                'format' => 'A4-L',
                 'default_font_size' => 12,
                 'default_font' => 'Arial',
             ]);

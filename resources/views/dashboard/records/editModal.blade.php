@@ -1,8 +1,14 @@
+<div class="alert alert-danger" role="alert"  id="alerts" style="display: none;">
+
+</div>
 <div class="row">
     <style>
-        label{
+        .form-group label:first-of-type{
             font-size: 20px;
             color: #000;
+        }
+        .form-group label:nth-of-type(2){
+            color: red;
         }
     </style>
     <div class="form-group col-md-12">

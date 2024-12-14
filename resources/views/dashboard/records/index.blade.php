@@ -567,8 +567,22 @@
         <script src="{{asset('js/vfs_fonts.js')}}"></script>
         <script src="{{asset('js/buttons.html5.min.js')}}"></script>
         <script src="{{asset('js/buttons.print.min.js')}}"></script>
+
+        <script src="{{asset('js/jquery.validate.min.js')}}"></script>
         <script type="text/javascript">
             $(document).ready(function() {
+                $.validator.messages.required = "هذا الحقل مطلوب";
+                $("#editForm").validate({
+                    rules: {
+                        name: {
+                            required: true,
+                            maxlength: 255,
+                        }
+                    },
+                    messages: {
+                        name: "يرجى إدخال اسم المريض",
+                    }
+                });
                 let formatNumber = (number,min = 0) => {
                     // التحقق إذا كانت القيمة فارغة أو غير صالحة كرقم
                     if (number === null || number === undefined || isNaN(number)) {
@@ -1042,37 +1056,47 @@
                     }
                 })
                 $(document).on('click', '#update', function () {
-                    $.each(record, function(key, value) {
-                        const input = $('#' + key); // البحث عن العنصر باستخدام id
-                        if(key == 'id'){
-                            //
-                        }else if(key == 'done'){
-                            if(input.is(':checked')) {
-                                record[key] = 1;
+                    let form = $('#editForm'); // اختر النموذج بشكل عام
+                    let isValid = true;
+                    isValid = form.validate().form(); // تحقق من صحة النموذج
+                    if (isValid) {
+                        $.each(record, function(key, value) {
+                            const input = $('#' + key); // البحث عن العنصر باستخدام id
+                            if(key == 'id'){
+                                //
+                            }else if(key == 'done'){
+                                if(input.is(':checked')) {
+                                    record[key] = 1;
+                                }else{
+                                    record[key] = 0;
+                                }
                             }else{
-                                record[key] = 0;
+                                record[key] = input.val();
                             }
-                        }else{
-                            record[key] = input.val();
-                        }
-                    });
-                    $.ajax({
-                        url: "{{ route('records.update', ':id') }}".replace(':id', record.id),
-                        method: 'PUT',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        data: record,
-                        success: function (response) {
-                            $('#editRecord').modal('hide');
-                            table.ajax.reload();
-                            alert('تم التعديل بنجاح');
-                        },
-                        error: function (xhr, status, error) {
-                            console.error('AJAX error:', status, error);
-                            alert('هنالك خطأ في الإتصال بالسيرفر.');
-                        },
-                    })
+                        });
+                        $.ajax({
+                            url: "{{ route('records.update', ':id') }}".replace(':id', record.id),
+                            method: 'PUT',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            data: record,
+                            success: function (response) {
+                                $('#editRecord').modal('hide');
+                                table.ajax.reload();
+                                alert('تم التعديل بنجاح');
+                            },
+                            error: function (xhr, status, error) {
+                                console.error('AJAX error:', status, error);
+                                alert('هنالك خطأ في إدخال الداتا يرجى التحقق منها.');
+                            },
+                        })
+                        $('#alerts').slideUp();
+                    } else {
+                        // إذا كانت هناك أخطاء، لا تواصل
+                        $('#alerts').slideDown();
+                        $('#alerts').text("يرجى تصحيح الأخطاء في النموذج قبل المتابعة.");
+                    }
                 });
                 $(document).on('click', '#createNew', function () {
                     $.ajax({
@@ -1129,37 +1153,47 @@
                     createRecordForm(id);
                 });
                 function createRecordForm(id){
-                    $.each(record, function(key, value) {
-                        const input = $('#' + key); // البحث عن العنصر باستخدام id
-                        if(key == 'id'){
-                            //
-                        }else if(key == 'done'){
-                            if(input.is(':checked')) {
-                                record[key] = 1;
+                    let form = $('#editForm'); // اختر النموذج بشكل عام
+                    let isValid = true;
+                    isValid = form.validate().form(); // تحقق من صحة النموذج
+                    if (isValid) {
+                        $.each(record, function(key, value) {
+                            const input = $('#' + key); // البحث عن العنصر باستخدام id
+                            if(key == 'id'){
+                                //
+                            }else if(key == 'done'){
+                                if(input.is(':checked')) {
+                                    record[key] = 1;
+                                }else{
+                                    record[key] = 0;
+                                }
                             }else{
-                                record[key] = 0;
+                                record[key] = input.val();
                             }
-                        }else{
-                            record[key] = input.val();
-                        }
-                    });
-                    $.ajax({
-                        url: "{{ route('records.store') }}",
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        data: record,
-                        success: function (response) {
-                            $('#editRecord').modal('hide');
-                            table.ajax.reload();
-                            alert('تم إضافة سجل جديد بنجاح');
-                        },
-                        error: function (xhr, status, error) {
-                            console.error('AJAX error:', status, error);
-                            alert('هنالك خطأ في الإتصال بالسيرفر.');
-                        },
-                    })
+                        });
+                        $.ajax({
+                            url: "{{ route('records.store') }}",
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            data: record,
+                            success: function (response) {
+                                $('#editRecord').modal('hide');
+                                table.ajax.reload();
+                                alert('تم إضافة سجل جديد بنجاح');
+                            },
+                            error: function (xhr, status, error) {
+                                console.error('AJAX error:', status, error);
+                                alert('هنالك خطأ في إدخال الداتا يرجى التحقق منها.');
+                            },
+                        })
+                        $('#alerts').slideUp();
+                    } else {
+                        // إذا كانت هناك أخطاء، لا تواصل
+                        $('#alerts').slideDown();
+                        $('#alerts').text("يرجى تصحيح الأخطاء في النموذج قبل المتابعة.");
+                    }
                 };
                 $(document).on('click', '.archived_row', function () {
                     const id = $(this).data('id'); // الحصول على ID الصف
