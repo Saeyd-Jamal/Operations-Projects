@@ -15,11 +15,11 @@
         background-color: #303030 !important;
     }
 </style>
-<nav class="navbar navbar-expand-lg navbar-light bg-dark flex-row border-bottom shadow">
+<nav class="navbar navbar-expand-lg navbar-light bg-dark flex-row border-bottom shadow p-0">
     <div class="container-fluid">
-        <a class="navbar-brand mx-lg-1 mr-0 d-flex align-items-center" href="{{route('records.index')}}}">
+        <a class="navbar-brand mx-lg-1 mr-0 d-flex align-items-center p-0" href="{{route('records.index')}}}">
             <img src="{{asset('img/logo.png')}}" class="navbar-brand-img" alt="..." style="width: 8%">
-            <h1 class="h3 ml-2 text-white">مستشفى يافا الطبي</h1>
+            <h1 class="h3 ml-2 mb-0 text-white">مستشفى يافا الطبي</h1>
         </a>
         <button class="navbar-toggler mt-2 mr-auto toggle-sidebar text-muted">
             <i class="fe fe-menu navbar-toggler-icon"></i>
@@ -82,7 +82,7 @@
                     </a>
                 </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink"
+                <a class="nav-link dropdown-toggle text-muted p-0" href="#" id="navbarDropdownMenuLink"
                     role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="avatar avatar-sm mt-2">
                         <img src="{{asset('img/user.jpg')}}" alt="..." class="avatar-img rounded-circle">
